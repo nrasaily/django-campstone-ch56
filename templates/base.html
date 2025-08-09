@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% endblock %}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  {% block css %}{% endblock %}
+</head>
+
+<body>
+  
+    {% include 'navbar.html' %}
+  
+  <main>
+    {% block content %}
+    <a class="navbar-brand" href="{% url 'home' %}">
+  <img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 50px;">
+  Paarijat Tax Service
+</a>
+
+    {% endblock %}
+  </main>
+  
+  <footer class="bg-dark text-white pt-5 pb-4">
+    <div class="container text-center text-md-left">
+      <div class="row text-center text-md-left">
+        
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Paarijat Tax Service</h5>
+          <p>Your trusted partner in tax filing, bookkeeping, and financial consulting. Simple, fast, and secure services tailored to your needs.</p>
+        </div>
+
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Quick Links</h5>
+          <p><a href="{% url 'home' %}" class="text-white" style="text-decoration: none;">Home</a></p>
+          <p><a href="{% url 'about' %}" class="text-white" style="text-decoration: none;">About</a></p>
+          <p><a href="{% url 'contact' %}" class="text-white" style="text-decoration: none;">Contact</a></p>
+          <p><a class="text-white" style="text-decoration: none;" href="{% url 'login' %}">Login</a></p>
+        </div>
+
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Services</h5>
+          <p>Individual Tax</p>
+          <p>Business Returns</p>
+          <p>IRS Letters Help</p>
+          <p>Bookkeeping</p>
+        </div>
+
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h5 class="text-uppercase mb-4 font-weight-bold text-warning">Contact</h5>
+          <p><i class="fas fa-home mr-3"></i> California, USA</p>
+          <p><i class="fas fa-envelope mr-3"></i> info@paarijattax.com</p>
+          <p><i class="fas fa-phone mr-3"></i> +1 123 456 7890</p>
+        </div>
+      </div>
+
+      <hr class="mb-4">
+
+      <div class="row align-items-center">
+        <div class="col-md-7 col-lg-8">
+          <p>© 2025 Paarijat Tax Service | All Rights Reserved</p>
+        </div>
+
+        <div class="col-md-5 col-lg-4">
+          <div class="text-center text-md-right">
+            <a href="#" class="btn btn-outline-light btn-floating m-1" role="button"><i class="fab fa-facebook-f">1</i></a>
+            <a href="#" class="btn btn-outline-light btn-floating m-1" role="button"><i class="fab fa-twitter">2</i></a>
+            <a href="#" class="btn btn-outline-light btn-floating m-1" role="button"><i class="fab fa-instagram">3</i></a>
+            <a href="#" class="btn btn-outline-light btn-floating m-1" role="button"><i class="fab fa-linkedin-in">4</i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+    crossorigin="anonymous"></script>
+  {% block js %}
+  {% endblock %}
+</body>
+
+</html>

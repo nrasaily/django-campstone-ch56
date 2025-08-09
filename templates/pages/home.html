@@ -1,0 +1,72 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Welcome
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static '/css/home.css' %}">
+{% endblock css %}
+
+
+{% block content %}
+<header class="py-5 bg-primary text-white text-center">
+  <div class="container">
+
+  
+
+    <h1 class="display-4 fw-bold">Welcome to Paarijat Tax Service</h1>
+    <p class="lead">Reliable, Affordable & Personalized Tax Solutions</p>
+    <a href="{% url 'contact' %}" class="btn btn-light btn-lg mt-3">Book Your Consultation</a>
+  </div>
+</header>
+
+{% load static %}
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="text-primary mb-4">What We Offer</h2>
+    <div class="row">
+      
+      <div class="col-md-4 mb-4">
+        <img src="{% static 'images/individual-tax.jpg' %}" alt="Individual Tax Filing" class="img-fluid mb-3" style="max-height: 180px;">
+        <h5>Individual Tax Filing</h5>
+        <p>From W-2s to 1099s, we ensure accurate filing and maximum deductions for individuals and families.</p>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <img src="{% static './images/business-tax.jpg' %}" alt="Business Tax Services" class="img-fluid mb-3" style="max-height: 180px;">
+        <h5>Business Tax Services</h5>
+        <p>Whether you're a sole proprietor or corporation, we handle tax returns, planning, and compliance.</p>
+      </div>
+      
+      <div class="col-md-4 mb-4">
+        <img src="{% static 'images/consultation.webp' %}" alt="Tax Consultation" class="img-fluid mb-3" style="max-height: 180px;">
+        <h5>Tax Consultation</h5>
+        <p>Need help with IRS letters, tax strategy, or bookkeeping? We offer expert consultations tailored to you.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="py-5 bg-white">
+  <div class="container">
+    <h3 class="text-center text-primary mb-4">Why Choose Us?</h3>
+    <div class="row text-center">
+      <div class="col-md-6">
+        <p><strong>✅ Experience & Trust:</strong> Years of tax experience backed by satisfied clients and transparency.</p>
+        <p><strong>✅ Personalized Care:</strong> We don’t just file returns—we build relationships with our clients.</p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>✅ Affordable Pricing:</strong> Clear, competitive pricing with no hidden fees or surprises.</p>
+        <p><strong>✅ Fast & Secure:</strong> Digital filing and encrypted systems to protect your data and time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

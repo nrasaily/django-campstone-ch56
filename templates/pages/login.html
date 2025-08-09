@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<section class="vh-100 bg-light d-flex align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-5">
+            <div class="text-center mb-4">
+              <img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 60px;">
+              <h3 class="fw-bold mt-3 text-primary">Login to Your Account</h3>
+            </div>
+            <form method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Login</button>
+              </div>
+            </form>
+            <hr>
+            <div class="text-center">
+              <p class="mb-0">Don't have an account?
+                <a href="{% url 'signup' %}" class="text-decoration-none text-success">Sign up</a>
+              </p>
+            </div>
+          </div>
+        </div>
+        <p class="text-center text-muted mt-3 small">© 2025 Paarijat Capstone</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Upload Document{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+          <h4>Upload Your Tax Document</h4>
+        </div>
+        <div class="card-body">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center mt-3">
+              <button type="submit" class="btn btn-success">Upload</button>
+              <a href="{% url 'home' %}" class="btn btn-secondary ms-2">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
