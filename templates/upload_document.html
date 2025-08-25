@@ -1,26 +1,106 @@
 {% extends "base.html" %}
 {% block title %}Upload Document{% endblock %}
 
+
+
 {% block content %}
 <div class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white text-center">
-          <h4>Upload Your Tax Document</h4>
-        </div>
-        <div class="card-body">
-          <form method="POST" enctype="multipart/form-data">
+    <div class="col-md-7 col-lg-6">
+      <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+
+          <h3 class="fw-bold mb-1">Upload Your Tax Document</h3>
+          <p class="text-muted mb-4">Securely attach PDFs, images, or spreadsheets for your client.</p>
+
+          <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
-            <div class="text-center mt-3">
-              <button type="submit" class="btn btn-success">Upload</button>
-              <a href="{% url 'home' %}" class="btn btn-secondary ms-2">Cancel</a>
+
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger small mb-3">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <!-- Client -->
+            <div class="mb-3">
+              <label for="id_client" class="form-label">Client</label>
+              {{ form.client }}
+              {% if form.client.errors %}<div class="text-danger small">{{ form.client.errors.0 }}</div>{% endif %}
+            </div>
+
+            <!-- File -->
+            <div class="mb-3">
+              <label for="id_document" class="form-label">Document file</label>
+
+              <div id="dropZone" class="border rounded-4 p-4 bg-light d-flex flex-column align-items-center text-center">
+                <div class="mb-2" style="font-size:1.75rem;">⬆️</div>
+                <div class="fw-semibold">Drag & drop file here</div>
+                <div class="text-muted small">or click to choose</div>
+                {{ form.document }}
+              </div>
+
+              <div id="fileHint" class="text-muted small mt-2">
+                Accepted: PDF, JPG/PNG, DOCX, XLSX (max 10MB)
+              </div>
+
+              {% if form.document.errors %}<div class="text-danger small mt-2">{{ form.document.errors.0 }}</div>{% endif %}
+            </div>
+
+            <ul class="small text-muted mb-3 ps-3">
+              <li>Do not upload passwords or sensitive notes.</li>
+              <li>Large files may take a moment.</li>
+            </ul>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-dark flex-grow-1">Upload</button>
+              <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
             </div>
           </form>
+
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Light behavior: style widgets + drag & drop + filename preview -->
+<script>
+  // Add Bootstrap styles to widgets (if not already set in forms.py)
+  const client = document.getElementById('id_client');
+  const fileInput = document.getElementById('id_document') || document.querySelector('input[type=file]');
+  if (client && !client.classList.contains('form-select')) client.classList.add('form-select');
+  if (fileInput) fileInput.classList.add('form-control');
+
+  // Clickable drop zone + DnD
+  const drop = document.getElementById('dropZone');
+  const hint = document.getElementById('fileHint');
+
+  if (drop && fileInput) {
+    // Hide native input visually but keep it accessible for screen readers
+    fileInput.style.position = 'absolute';
+    fileInput.style.opacity = 0;
+    fileInput.style.width = 0;
+    fileInput.style.height = 0;
+
+    drop.addEventListener('click', () => fileInput.click());
+    ['dragenter','dragover'].forEach(evt =>
+      drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.add('border-dark'); })
+    );
+    ['dragleave','drop'].forEach(evt =>
+      drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.remove('border-dark'); })
+    );
+    drop.addEventListener('drop', e => {
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        updateHint();
+      }
+    });
+    fileInput.addEventListener('change', updateHint);
+
+    function updateHint(){
+      const f = fileInput.files[0];
+      hint.textContent = f ? `Selected: ${f.name} (${Math.round(f.size/1024)} KB)` :
+      'Accepted: PDF, JPG/PNG, DOCX, XLSX (max 10MB)';
+    }
+  }
+</script>
 {% endblock %}

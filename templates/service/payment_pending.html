@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Pay {{ service.title }}{% endblock %}
+
+{% block content %}
+<div class="alert alert-info">
+  Secure checkout coming soon. You will receive an instant email receipt.
+</div>
+<a href="{% url 'service:detail' service.slug %}" class="btn btn-outline-secondary">Back</a>
+{% endblock %}

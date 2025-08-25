@@ -1,0 +1,31 @@
+{# templates/service/pay_checkout.html #}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-body p-4">
+          <h2 class="text-center mb-3">💳 Complete Your Payment</h2>
+          <p class="text-center text-muted mb-4">
+            Service: <strong>{{ service.title }}</strong><br>
+            Amount: <strong>${{ service.price }}</strong>
+          </p>
+
+          <form method="POST" action="{% url 'service_pay_create' service.slug %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+              Pay ${{ service.price }}
+            </button>
+          </form>
+
+          <p class="mt-3 small text-muted text-center">
+            You’ll be redirected to Stripe’s secure checkout.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -26,6 +26,6 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('notes/', include('notes.urls')),
     path("users/", include('users.urls')),
-    
+    path('service/', include(('service.urls', "service"), namespace="service")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -11,8 +11,13 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from environs import Env
 import os
 import certifi
+
+env = Env()
+env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +46,8 @@ INSTALLED_APPS = [
     'pages',
     'notes',
     'users',
+    'widget_tweaks',
+    'service',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +153,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'nareshsathi79@gmail.com'
 EMAIL_HOST_PASSWORD = 'lijjyendpcpwzhmg'
 DEFAULT_FROM_EMAIL = 'nareshsathi79@gmail.com'
+
+
+
+STRIPE_SECRET_KEY = env.str("STRIPE_SECRET_KEY")
+
+STRIPE_SECRET_KEY = env.str("STRIPE_SECRET_KEY")

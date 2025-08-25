@@ -21,6 +21,13 @@
     <h4>{{ note.title }}</h4>
     <label>{{ note.created_on }}</label>
     <p>{{ note.content }}</p>
+
+    <!--Buttons side by side-->
+    <div class="d-flex justify-content-center gap-2">
+      <a href="{% url 'note_update' note.pk %}" class="btn btn-warning">Update</a>
+      <a href="{% url 'note_delete' note.pk %}" class="btn btn-danger">Delete</a>
+    </div>
+
   </div>
   {% endfor %}
 </div>
