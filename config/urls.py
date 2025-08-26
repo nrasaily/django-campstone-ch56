@@ -19,6 +19,7 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
 from users import urls 
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -27,5 +28,8 @@ urlpatterns = [
     path('notes/', include('notes.urls')),
     path("users/", include('users.urls')),
     path('service/', include(('service.urls', "service"), namespace="service")),
+    path("accounts/login/",
+    auth_views.LoginView.as_view(template_name="accounts/login.html"),name="login"),
+    path("accounts/", include("django.contrib.auth.urls")), 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

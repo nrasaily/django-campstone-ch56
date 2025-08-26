@@ -136,6 +136,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
+# Send @login_required redirects to /login/ instead of /accounts/login/
+LOGIN_URL = "login"            # this matches your existing named URL 'login'
+LOGIN_REDIRECT_URL = "service:list"  # where to go after logging in (optional)
+
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ACCOUNT_SIGNUP_REDIRECT_URL ="/home/"
@@ -156,6 +161,7 @@ DEFAULT_FROM_EMAIL = 'nareshsathi79@gmail.com'
 
 
 
-STRIPE_SECRET_KEY = env.str("STRIPE_SECRET_KEY")
+import os
 
-STRIPE_SECRET_KEY = env.str("STRIPE_SECRET_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
