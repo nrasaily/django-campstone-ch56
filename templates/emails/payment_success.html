@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Payment received{% endblock title %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <span class="badge bg-success me-2">Success</span>
+            <h2 class="h4 mb-0">Payment received</h2>
+          </div>
+
+          <p class="mb-2">
+            Hi{% if buyer_name %} <strong>{{ buyer_name }}</strong>{% endif %},
+          </p>
+          <p class="mb-4">
+            We’ve received your payment of
+            <strong>{{ amount }} {{ currency }}</strong>
+            for
+            <strong>{{ service_title or "your purchase" }}</strong>.
+          </p>
+
+          <div class="table-responsive mb-4">
+            <table class="table table-sm align-middle">
+              <tbody>
+                <tr>
+                  <th scope="row" class="text-muted">Reference</th>
+                  <td><code class="user-select-all">{{ session_id }}</code></td>
+                </tr>
+                {% if service_title %}
+                <tr>
+                  <th scope="row" class="text-muted">Service</th>
+                  <td>{{ service_title }}</td>
+                </tr>
+                {% endif %}
+                {% if buyer_name %}
+                <tr>
+                  <th scope="row" class="text-muted">Billed to</th>
+                  <td>{{ buyer_name }}</td>
+                </tr>
+                {% endif %}
+                {% if buyer_email %}
+                <tr>
+                  <th scope="row" class="text-muted">Email</th>
+                  <td>{{ buyer_email }}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                  <th scope="row" class="text-muted">Amount</th>
+                  <td><strong>{{ amount }} {{ currency }}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'service:list' %}" class="btn btn-primary">
+              Continue browsing
+            </a>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.print()">
+              Print receipt
+            </button>
+          </div>
+
+          <hr class="my-4">
+
+          <p class="mb-0 text-muted small">
+            If you have any questions, just reply to this email or contact support.
+          </p>
+          <p class="mb-0 fw-semibold">Paarijat Tax Service</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

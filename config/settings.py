@@ -155,9 +155,9 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'nareshsathi79@gmail.com'
+EMAIL_HOST_USER = 'naralways760@gmail.com'
 EMAIL_HOST_PASSWORD = 'lijjyendpcpwzhmg'
-DEFAULT_FROM_EMAIL = 'nareshsathi79@gmail.com'
+DEFAULT_FROM_EMAIL = 'naralways760@gmail.com'
 
 
 
@@ -165,3 +165,4 @@ import os
 
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
 STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")

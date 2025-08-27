@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from users import urls 
 from django.contrib.auth import views as auth_views
+from service import views
 
 
 urlpatterns = [
@@ -31,5 +32,6 @@ urlpatterns = [
     path("accounts/login/",
     auth_views.LoginView.as_view(template_name="accounts/login.html"),name="login"),
     path("accounts/", include("django.contrib.auth.urls")), 
+    path("webhook/", views.stripe_webhook, name="stripe_webhook"),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

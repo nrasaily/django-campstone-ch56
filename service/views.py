@@ -11,6 +11,12 @@ from django.urls import reverse
 import logging
 import stripe 
 
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+
+
 logger = logging.getLogger(__name__)
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -96,3 +102,60 @@ def process_payment(request, slug):
         },
     )
     return redirect(session.url, code=303)
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get("HTTP_STRIPE_SIGNATURE", "")
+    endpoint_secret = getattr(settings, "STRIPE_WBHOOK_SECRETE", None)
+
+    try:
+      event = stripe.webhook.construct_event(payload, sig_header, endpoint_secret)
+    except ValueError:
+        return HttpResponse(status=400) # invalid payload
+    except stripe.error.SignatureVerificationError:
+        return HttpResponse(status=400) # invalid signature
+    # Fire when the Checout flow complete successfully
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+
+      # Who to email
+        to_email = (session.get("customer_details") or {}).get("email") or session.get("customer_email")
+          #Useful details
+        amount_total = (session.get("amount_total") or 0)/ 100.0
+        currency = (session.get("currency") or "usd").upper()
+        service_slug = (session.get("metadata")or {}).get("service_slug")
+        service_title = (session.get("metadata") or {}).get("service_title")
+        buyer_name = (session.get("metadata") or {}).get("buyer_name")
+
+        # (Optional) Update your Payment model here if desired
+        try:
+            client = Client.objects.get(user__email=to_email)
+            Payment.objects.create(
+                client=client,
+                amount=amount_total,
+                currency=currency,
+                method="card",
+                status="paid",
+                reference=session.get("id"),
+            )
+        except Client.DoesNotExist:
+            pass
+    
+    if to_email:
+        context = {
+            "buyer_name": buyer_name,
+            "service_title": service_title,
+            "amount": f"{amount_total:2f}",
+            "currency": currency,
+            "session_id": session.get("id"),
+        }
+        subject = "Payment recieved - thank you"
+        from_email = settings.DEFAULT_FROM_EMAIL
+        text_body = render_to_string("emails/payment_success.txt", context)
+        html_body = render_to_string("emails/payment_success.html", context)
+
+        msg = EmailMultiAlternatives(subject, text_body, from_email, [to_email])
+        msg.attach_alternative(html_body, "text/html")
+        msg.send(fail_silently=False)
+    return HttpResponse(status=200)
