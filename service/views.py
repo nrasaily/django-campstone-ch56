@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
+from django.core.mail import send_mail
+from django.http import JsonResponse
 from .models import Service, Payment
 
 from pages.models import Client 
@@ -47,6 +49,16 @@ def service_pay(request, slug):
     
 import stripe
 
+def send_client_email(request):
+    send_mail(
+        subject="Email confirmation",
+        message="Thank for buying",
+        from_email="naralways760@gmail.com",
+        recipient_list=["mail@gmail.com"],
+        fail_silently=False
+    )
+    return JsonResponse({"status": "Email sent"})
+
 def payment_success(request):
     session_id = request.GET.get("session_id")
     if session_id:
@@ -54,6 +66,7 @@ def payment_success(request):
         session = stripe.checkout.Session.retrieve(session_id)
         # Optionally update payment status here
     messages.success(request, "Payment successful! 🎉")
+    send_client_email()
     return render(request, "service/payment_success.html")
 
 
