@@ -22,6 +22,7 @@ def about_view(request):
 def contact_view(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
+
         if form.is_valid():
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
@@ -43,7 +44,7 @@ def contact_view(request):
                 to=getattr(settings, "CONTACT_RECIPIENTS", [settings.DEFAULT_FROM_EMAIL]),
                 headers={"Reply-To": email},
             )
-            owner_email.send(fail_silently=False)
+            # owner_email.send(fail_silently=False)
 
             #--2) Auto-reply to USER -----
             user_subject = "Thanks for contacting Paarijat Tax Service"
@@ -51,7 +52,7 @@ def contact_view(request):
                 f"Hi {name},\n\n"
                 "Thanks for reaching out to Paarijat Tax Service. "
                 "We've recieved your message and will get back to you Shortly.\n\n"
-                "f{message}\n\n"
+                f"{message}\n\n"
                 "Regards,\nPaarijat Tax Service\n771 N Plymouth Ave, Rochester, NY 14608\n+1 (585) 555-1234"
             )
             user_email_msg = EmailMessage(
