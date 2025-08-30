@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('notes/', include('notes.urls')),
     path("users/", include('users.urls')),
+    path("service/webhook/", views.stripe_webhook, name="stripe_webhook"),
     path('service/', include(('service.urls', "service"), namespace="service")),
     path("accounts/login/",
     auth_views.LoginView.as_view(template_name="accounts/login.html"),name="login"),

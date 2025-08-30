@@ -27,7 +27,7 @@ class Service(models.Model):
 
 class Payment(models.Model):
     client = models.ForeignKey("pages.Client", on_delete=models.CASCADE, related_name="payments")
-    service = models.ForeignKey("service.Service", on_delete=models.CASCADE, related_name="payments")
+    service = models.ForeignKey("service.Service", null=True, blank=True, on_delete=models.CASCADE, related_name="payments")
     consultation = models.ForeignKey(
         "pages.Consultation",
         on_delete=models.SET_NULL,

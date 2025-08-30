@@ -122,12 +122,16 @@ def process_payment(request, slug):
     return redirect(session.url, code=303)
 
 @csrf_exempt
-@require_POST
 def stripe_webhook(request):
+    
+    if request.method == "GET":
+        print("Webhook with get")
+        return "TEST"
+
     print("Step 1")
     payload = request.body
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE", "")
-    endpoint_secret = getattr(settings, "STRIPE_WBHOOK_SECRETE", None)
+    endpoint_secret = getattr(settings, "STRIPE_WEBHOOK_SECRET", None)
 
     try:
       event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
@@ -173,25 +177,25 @@ def stripe_webhook(request):
     
     
 
-    #Send email (only if we have an email)
-    if to_email:
-        print("Step 4: sending email to", to_email)
-        context = {
-            "buyer_name": buyer_name,
-            "service_title": service_title,
-            "amount": f"{amount_total:.2f}",
-            "currency": currency,
-            "session_id": session.get("id"),
-        }
-        subject = "Payment recieved - thank you"
-        from_email = settings.DEFAULT_FROM_EMAIL
-        text_body = render_to_string("emails/payment_success.txt", context)
-        html_body = render_to_string("emails/payment_success.html", context)
+        #Send email (only if we have an email)
+        if to_email:
+            print("Step 4: sending email to", to_email)
+            context = {
+                "buyer_name": buyer_name,
+                "service_title": service_title,
+                "amount": f"{amount_total:.2f}",
+                "currency": currency,
+                "session_id": session.get("id"),
+            }
+            subject = "Payment recieved - thank you"
+            from_email = settings.DEFAULT_FROM_EMAIL
+            text_body = render_to_string("emails/payment_success.txt", context)
+            html_body = render_to_string("emails/payment_success.html", context)
 
-        msg = EmailMultiAlternatives(subject, text_body, from_email, [to_email])
-        msg.attach_alternative(html_body, "text/html")
-        msg.send(fail_silently=False)
-        print("Step 5: email sent")
+            msg = EmailMultiAlternatives(subject, text_body, from_email, [to_email])
+            msg.attach_alternative(html_body, "text/html")
+            msg.send(fail_silently=False)
+            print("Step 5: email sent")
 
     print("Step 6: 200 OK")
     return HttpResponse(status=200)

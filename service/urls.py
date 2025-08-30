@@ -11,5 +11,5 @@ urlpatterns = [
     path("<slug:slug>/process/", views.process_payment, name="process_payment"),
     path('payment/success/', views.payment_success, name='payment_success'),
     path('payment/cancel/', views.payment_cancel, name='payment_cancel'),
-    path("service/webhook/", views.stripe_webhook, name="stripe_webhook"),
+    path("webhook/", views.stripe_webhook, name="service_webhook"),
 ]

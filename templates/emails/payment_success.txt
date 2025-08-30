@@ -1,0 +1,2 @@
+We’ve received your payment of {{ amount }} {{ currency }} for {{ service_title }}.
+Thank you for your purchase.
