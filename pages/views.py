@@ -44,7 +44,7 @@ def contact_view(request):
                 to=getattr(settings, "CONTACT_RECIPIENTS", [settings.DEFAULT_FROM_EMAIL]),
                 headers={"Reply-To": email},
             )
-            # owner_email.send(fail_silently=False)
+            owner_email.send(fail_silently=False)
 
             #--2) Auto-reply to USER -----
             user_subject = "Thanks for contacting Paarijat Tax Service"
@@ -68,9 +68,12 @@ def contact_view(request):
                 messages.success(request, "thanks! Your nessage has been sent.")
                 return redirect("contact") # or a 'success' page
             except Exception as exc:
+              print("message not sent")
+              print(exc)
               # Log exc in real apps
               messages.error(request, "Sorrry, we could not send your message right now. Please try again later.")
         else: 
+            print("Form invalid")
             messages.error(request, "Please fix the errors below.")
     else: 
         form = ContactForm()
