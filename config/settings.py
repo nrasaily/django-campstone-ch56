@@ -146,6 +146,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ACCOUNT_SIGNUP_REDIRECT_URL ="/home/"
 LOGIN_REDIRECT_URL = "/home/"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+
 # Email setting for development- show email in the console.
 
 os.environ["SSL_CERT_FILE"] = certifi.where()

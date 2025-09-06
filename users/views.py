@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.conf import settings
+from .forms import TaxDocumentForm
 
 def password_reset_request(request):
     if request.method == "POST":
@@ -46,3 +47,14 @@ def password_reset_request(request):
         form = PasswordResetForm()
     
     return render(request, "users/password_reset_request.html", {"form": form})
+
+def upload_document(request):
+    if request.method == "POST":
+        form = TaxDocumentForm(request.POST, request.FILES)  # <= include request.FILES
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Document uploaded successfully.")
+            return redirect("home")  # or a list/detail page
+    else:
+        form = TaxDocumentForm()
+    return render(request, "users/upload_document.html", {"form": form})

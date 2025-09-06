@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import password_reset_request
+from .views import upload_document
 
 from django.contrib.auth import views as auth_views
 
@@ -17,4 +18,5 @@ urlpatterns = [
   path('password_change/done/', 
   auth_views.PasswordChangeDoneView.as_view(template_name='users/password_change_done.html'), 
   name='password_change_done'),
+  path("documents/upload/", upload_document, name="upload_document"),
 ]
